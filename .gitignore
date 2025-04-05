@@ -1,0 +1,24 @@
+# Environnement virtuel
+.venv/
+venv/
+env/
+
+# Fichiers Python compilés
+__pycache__/
+*.pyc
+
+# Fichiers liés à l'environnement local
+*.env
+.env
+
+# Fichiers système
+.DS_Store
+
+# Jupyter notebook checkpoints (si tu en as)
+.ipynb_checkpoints/
+
+# Streamlit cache
+.streamlit/
+
+# Mot de passe ou config sensible
+config_secrets.py
