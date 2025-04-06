@@ -3,6 +3,9 @@ from sqlalchemy import ForeignKey, String, Date
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from datetime import date
 
+class Base(DeclarativeBase):
+    pass
+
 class CoupeDuMonde(Base):
     __tablename__ = "coupe_du_monde"
 
@@ -25,7 +28,7 @@ class Equipe(Base):
     coupe_du_monde: Mapped["CoupeDuMonde"] = relationship(back_populates="equipes")
 
     joueurs: Mapped[List["Joueur"]] = relationship(back_populates="equipe")
-    personnel = relationship("Personnel", back_populates="equipe")
+    personnels = relationship("Personnel", back_populates="equipe")
 
     parties_recue: Mapped[List["Partie"]] = relationship("Partie", foreign_keys="[Partie.equipe_recevante_id]", back_populates="equipe_recevante")
     parties_visitees: Mapped[List["Partie"]] = relationship("Partie", foreign_keys="[Partie.equipe_visiteuse_id]", back_populates="equipe_visiteuse")
@@ -94,7 +97,7 @@ class Partie(Base):
     score_recevante: Mapped[int] = mapped_column(Integer, nullable=True)
     score_visiteuse: Mapped[int] = mapped_column(Integer, nullable=True)
 
-    arbitres: Mapped[List["ArbitreDans"]] = relationship("ArbitreDans", back_populates="parties")
+    arbitres: Mapped[List["ArbitreDans"]] = relationship("ArbitreDans", back_populates="partie")
 
 class Arbitre(Base):
     __tablename__ = "arbitre"
