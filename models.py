@@ -15,7 +15,7 @@ class CoupeDuMonde(Base):
     nombre_equipes: Mapped[int] = mapped_column(nullable=False)
     vainqueur: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
 
-    # One-to-many relationship with Equipe
+
     equipes: Mapped[List["Equipe"]] = relationship(back_populates="coupe_du_monde")
 
 class Equipe(Base):
@@ -45,7 +45,6 @@ class Joueur(Base):
     carton_jaune: Mapped[int] = mapped_column(default=0, nullable=False)
     carton_rouge: Mapped[int] = mapped_column(default=0, nullable=False)
 
-    # one-to-many relationship with Equipe
     equipe_id: Mapped[int] = mapped_column(ForeignKey("equipe.id"))
     equipe: Mapped["Equipe"] = relationship(back_populates="joueurs")
 
@@ -58,7 +57,7 @@ class Personnel(Base):
     date_naissance: Mapped[date] = mapped_column(Date, nullable=False)
     role: Mapped[str] = mapped_column(String(50), nullable=False)
 
-    # one-to-many relationship with Equipe
+
     equipe_id: Mapped[int] = mapped_column(ForeignKey("equipe.id"))
     equipe: Mapped["Equipe"] = relationship(back_populates="personnels")
 
@@ -69,7 +68,6 @@ class Stade(Base):
     nom: Mapped[str] = mapped_column(String(50), nullable=False)
     ville: Mapped[str] = mapped_column(String(50), nullable=False)
 
-    # One-to-many relationship with Partie 
     parties: Mapped[List["Partie"]] = relationship(back_populates="stade")
 
 
@@ -86,7 +84,7 @@ class Partie(Base):
     stade_id: Mapped[int] = mapped_column(ForeignKey("stade.id"))
     stade: Mapped["Stade"] = relationship(back_populates="parties")
 
-    # FK 
+
     equipe_recevante_id: Mapped[int] = mapped_column(ForeignKey("equipe.id"))
     equipe_visiteuse_id: Mapped[int] = mapped_column(ForeignKey("equipe.id"))
 
@@ -107,7 +105,6 @@ class Arbitre(Base):
     date_naissance: Mapped[date] = mapped_column(Date, nullable=False)
     nationalite: Mapped[str] = mapped_column(String(50), nullable=False)
 
-    # One-to-many relationship with Partie
     parties: Mapped[List["ArbitreDans"]] = relationship("ArbitreDans",back_populates="arbitre")
 
 class ArbitreDans(Base):
@@ -116,7 +113,6 @@ class ArbitreDans(Base):
     partie_id: Mapped[int] = mapped_column(ForeignKey("partie.id"), primary_key=True)
     arbitre_id: Mapped[int] = mapped_column(ForeignKey("arbitre.id"), primary_key=True)
 
-    
     role: Mapped[str] = mapped_column(String(20), nullable=False)
 
     partie: Mapped["Partie"] = relationship("Partie", back_populates="arbitres")
