@@ -2,7 +2,6 @@ from sqlalchemy.orm import Session
 from models import CoupeDuMonde
 from config import SessionLocal  
 
-
 coupes_du_monde = [
     {"edition": "1986", "pays_hote": "Mexique", "nombre_equipes": 24, "vainqueur": "Argentine"},
     {"edition": "1990", "pays_hote": "Italie", "nombre_equipes": 24, "vainqueur": "Allemagne de l'Ouest"},
@@ -23,7 +22,6 @@ def insert_coupes_du_monde(db):
         db.add(coupe)
     db.commit()
     db.close()
-    print("Coupes du Monde insérées")
 
 if __name__ == "__main__":
     insert_coupes_du_monde()

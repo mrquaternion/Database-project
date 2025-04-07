@@ -15,7 +15,7 @@ class CoupeDuMonde(Base):
     nombre_equipes: Mapped[int] = mapped_column(nullable=False)
     vainqueur: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
 
-
+    # Relation avec les équipes
     equipes: Mapped[List["Equipe"]] = relationship(back_populates="coupe_du_monde")
 
 class Equipe(Base):
@@ -26,11 +26,13 @@ class Equipe(Base):
     coupe_du_monde_id: Mapped[int] = mapped_column(ForeignKey("coupe_du_monde.id"))
     coupe_du_monde: Mapped["CoupeDuMonde"] = relationship(back_populates="equipes")
 
+    # Relation avec les joueurs et le personnel
     joueurs: Mapped[List["Joueur"]] = relationship(back_populates="equipe")
     personnels: Mapped[List["Personnel"]] = relationship(back_populates="equipe")
 
-    parties_recue: Mapped[List["Partie"]] = relationship("Partie", foreign_keys="[Partie.equipe_recevante_id]", back_populates="equipe_recevante")
-    parties_visitees: Mapped[List["Partie"]] = relationship("Partie", foreign_keys="[Partie.equipe_visiteuse_id]", back_populates="equipe_visiteuse")
+    # Relation avec les parties
+    parties_reveceur: Mapped[List["Partie"]] = relationship("Partie", foreign_keys="[Partie.equipe_receveuse_id]", back_populates="equipe_receveuse")
+    parties_visiteur: Mapped[List["Partie"]] = relationship("Partie", foreign_keys="[Partie.equipe_visiteuse_id]", back_populates="equipe_visiteuse")
 
 
 class Joueur(Base):
@@ -45,6 +47,7 @@ class Joueur(Base):
     carton_jaune: Mapped[int] = mapped_column(default=0, nullable=False)
     carton_rouge: Mapped[int] = mapped_column(default=0, nullable=False)
 
+    # Relation avec l'équipe
     equipe_id: Mapped[int] = mapped_column(ForeignKey("equipe.id"))
     equipe: Mapped["Equipe"] = relationship(back_populates="joueurs")
 
@@ -57,7 +60,7 @@ class Personnel(Base):
     date_naissance: Mapped[date] = mapped_column(Date, nullable=False)
     role: Mapped[str] = mapped_column(String(50), nullable=False)
 
-
+    # Relation avec l'équipe
     equipe_id: Mapped[int] = mapped_column(ForeignKey("equipe.id"))
     equipe: Mapped["Equipe"] = relationship(back_populates="personnels")
 
@@ -68,8 +71,8 @@ class Stade(Base):
     nom: Mapped[str] = mapped_column(String(50), nullable=False)
     ville: Mapped[str] = mapped_column(String(50), nullable=False)
 
+    # Relation avec les parties
     parties: Mapped[List["Partie"]] = relationship(back_populates="stade")
-
 
 from sqlalchemy import ForeignKey, Integer
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -84,16 +87,16 @@ class Partie(Base):
     stade_id: Mapped[int] = mapped_column(ForeignKey("stade.id"))
     stade: Mapped["Stade"] = relationship(back_populates="parties")
 
-
-    equipe_recevante_id: Mapped[int] = mapped_column(ForeignKey("equipe.id"))
+    # Relation avec les équipes
+    equipe_receveuse_id: Mapped[int] = mapped_column(ForeignKey("equipe.id"))
     equipe_visiteuse_id: Mapped[int] = mapped_column(ForeignKey("equipe.id"))
 
-    equipe_recevante: Mapped["Equipe"] = relationship("Equipe", foreign_keys=[equipe_recevante_id], back_populates="parties_recue")
-    equipe_visiteuse: Mapped["Equipe"] = relationship("Equipe", foreign_keys=[equipe_visiteuse_id], back_populates="parties_visitees")
+    equipe_receveuse: Mapped["Equipe"] = relationship("Equipe", foreign_keys=[equipe_receveuse_id], back_populates="parties_reveceur")
+    equipe_visiteuse: Mapped["Equipe"] = relationship("Equipe", foreign_keys=[equipe_visiteuse_id], back_populates="parties_visiteur")
 
-    score_recevante: Mapped[int] = mapped_column(Integer, nullable=True)
+    score_receveur: Mapped[int] = mapped_column(Integer, nullable=True)
     score_visiteuse: Mapped[int] = mapped_column(Integer, nullable=True)
-
+    # Relation avec les arbitres
     arbitres: Mapped[List["ArbitreDans"]] = relationship("ArbitreDans", back_populates="partie")
 
 class Arbitre(Base):
@@ -105,6 +108,7 @@ class Arbitre(Base):
     date_naissance: Mapped[date] = mapped_column(Date, nullable=False)
     nationalite: Mapped[str] = mapped_column(String(50), nullable=False)
 
+    # Relation avec les parties
     parties: Mapped[List["ArbitreDans"]] = relationship("ArbitreDans",back_populates="arbitre")
 
 class ArbitreDans(Base):
@@ -115,5 +119,6 @@ class ArbitreDans(Base):
 
     role: Mapped[str] = mapped_column(String(20), nullable=False)
 
+    # Relation avec les parties et les arbitres
     partie: Mapped["Partie"] = relationship("Partie", back_populates="arbitres")
     arbitre: Mapped["Arbitre"] = relationship("Arbitre", back_populates="parties")

@@ -26,7 +26,6 @@ def insert_equipes(db):
                     equipe = Equipe(nom_pays=nom_pays, coupe_du_monde_id=coupe.id)
                     db.add(equipe)
         db.commit()
-        print("Insertion des équipes ok")
     except Exception as e:
         db.rollback()
         print("Erreur insertion:", e)

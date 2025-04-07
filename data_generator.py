@@ -7,6 +7,7 @@ from insert_equipes import insert_equipes
 from collections import defaultdict
 import random
 from datetime import date
+
 fake = Faker()
 
 
@@ -17,7 +18,6 @@ def generate_parties(db: Session, n):
     stades = db.query(Stade).all()
 
     if len(equipes) < 2 or len(stades) == 0:
-        print("Pas assez d'équipes ou de stades pour générer des parties.")
         return
     
     equipes_par_edition = defaultdict(list)
@@ -54,23 +54,22 @@ def generate_parties(db: Session, n):
             date=date_partie,
             phase=phase,
             stade =stade,
-            equipe_recevante=equipe1,
+            equipe_receveuse=equipe1,
             equipe_visiteuse=equipe2,
-            score_recevante=fake.random_int(min=0, max=5),
+            score_receveur=fake.random_int(min=0, max=5),
             score_visiteuse=fake.random_int(min=0, max=5),
         )
         db.add(partie)
 
     db.commit()
-    print("Parties générées")
 
 def generate_stades(db: Session, n=10):
-    typeStades = ["Stadium", "Arena", "Park", "Field"]
+    type_de_stades = ["Stadium", "Arena", "Park", "Field"]
     for _ in range(n):
         name = fake.company()
-        typeStade = fake.random_element(typeStades)
+        type_de_stade = fake.random_element(type_de_stades)
         stade = Stade(
-            nom= f"{name} {typeStade}",
+            nom= f"{name} {type_de_stade}",
             ville=fake.city()
         )
         db.add(stade)
@@ -79,6 +78,7 @@ def generate_stades(db: Session, n=10):
 def generate_joueurs(db: Session):
     equipes = db.query(Equipe).all()
     for equipe in equipes:
+        # Generate 11 players for each team
         for _ in range(11): 
             joueur = Joueur(
                 nom=fake.last_name(),
@@ -111,14 +111,13 @@ def generate_arbitres(db: Session, n):
     
     for _ in range(n):
         arbitre = Arbitre(
-            nom=fake.last_name_male(),
-            prenom=fake.first_name(),
+            nom=fake.last_name(),
+            prenom=fake.first_name_male(),
             date_naissance=fake.date_of_birth(minimum_age=30, maximum_age=50),
             nationalite=fake.random_element(nationalities)
         )
         db.add(arbitre)
     db.commit()
-    print("Arbitres générés")
 
 def generate_arbitres_dans(db: Session):
     parties = db.query(Partie).all()
@@ -126,7 +125,6 @@ def generate_arbitres_dans(db: Session):
     roles = ["Arbitre principal", "Arbitre assistant", "Quatrième arbitre"]
     
     if not arbitres or not parties:
-        print("Pas assez d'arbitres ou de parties pour générer des arbitres dans parties.")
         return  
 
     for partie in parties:
@@ -142,8 +140,6 @@ def generate_arbitres_dans(db: Session):
             db.add(arbitre_dans)
 
     db.commit()
-
-    print("Arbitres dans parties")
 
 def main():
     db = SessionLocal()

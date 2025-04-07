@@ -9,7 +9,7 @@ CREATE TABLE coupe_du_monde (
 CREATE TABLE equipe (
     id SERIAL PRIMARY KEY,
     nom_pays VARCHAR(50) NOT NULL,
-    coupe_du_monde_id INTEGER REFERENCES coupe_du_monde(id)
+    FOREIGN KEY(coupe_du_monde_id) REFERENCES coupe_du_monde (id)
 );
 
 CREATE TABLE joueur (
@@ -21,7 +21,8 @@ CREATE TABLE joueur (
     position VARCHAR(50) NOT NULL,
     carton_jaune INTEGER NOT NULL DEFAULT 0,
     carton_rouge INTEGER NOT NULL DEFAULT 0,
-    equipe_id INTEGER REFERENCES equipe(id)
+    equipe_id INTEGER NOT NULL, 
+    FOREIGN KEY(equipe_id) REFERENCES equipe (id)
 );
 
 CREATE TABLE personnel (
@@ -31,6 +32,7 @@ CREATE TABLE personnel (
     date_naissance DATE NOT NULL,
     role VARCHAR(50) NOT NULL,
     equipe_id INTEGER REFERENCES equipe(id)
+    FOREIGN KEY(equipe_id) REFERENCES equipe (id)
 );
 
 CREATE TABLE stade (
@@ -41,7 +43,7 @@ CREATE TABLE stade (
 
 CREATE TABLE partie (
     id SERIAL PRIMARY KEY,
-    date DATE,
+    date DATE NOT NULL,
     phase VARCHAR(50) NOT NULL,
     stade_id INTEGER REFERENCES stade(id),
     equipe_recevante_id INTEGER REFERENCES equipe(id),

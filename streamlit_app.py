@@ -3,6 +3,8 @@ import streamlit as st
 from sqlalchemy import  create_engine, text
 import pandas as pd
 from queries import Query_1, Query_2, Query_3, Query_4
+from dotenv import load_dotenv
+load_dotenv()
 
 # CSS
 
@@ -18,11 +20,12 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# DB_URL = os.getenv("DATABASE_URL")
-DATABASE_URL = "postgresql://postgres:postgres@localhost:5433/postgres"
+# Load environment variables
+# Put DATABASE_URL in .env file
+DATABASE_URL = os.getenv("DATABASE_URL")
 engine = create_engine(DATABASE_URL, echo=True)
 
-## TODO Faire l'interface ici
+# Function to execute SQLand return results as a DataFrame
 def execute_query(query):
     with engine.connect() as connection:
         result = connection.execute(text(query))
