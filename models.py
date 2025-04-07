@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional 
 from sqlalchemy import ForeignKey, String, Date 
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from datetime import date
@@ -18,7 +18,6 @@ class CoupeDuMonde(Base):
     # One-to-many relationship with Equipe
     equipes: Mapped[List["Equipe"]] = relationship(back_populates="coupe_du_monde")
 
-
 class Equipe(Base):
     __tablename__ = "equipe"
 
@@ -28,7 +27,7 @@ class Equipe(Base):
     coupe_du_monde: Mapped["CoupeDuMonde"] = relationship(back_populates="equipes")
 
     joueurs: Mapped[List["Joueur"]] = relationship(back_populates="equipe")
-    personnels = relationship("Personnel", back_populates="equipe")
+    personnels: Mapped[List["Personnel"]] = relationship(back_populates="equipe")
 
     parties_recue: Mapped[List["Partie"]] = relationship("Partie", foreign_keys="[Partie.equipe_recevante_id]", back_populates="equipe_recevante")
     parties_visitees: Mapped[List["Partie"]] = relationship("Partie", foreign_keys="[Partie.equipe_visiteuse_id]", back_populates="equipe_visiteuse")
