@@ -69,7 +69,7 @@ class Stade(Base):
     nom: Mapped[str] = mapped_column(String(50), nullable=False)
     ville: Mapped[str] = mapped_column(String(50), nullable=False)
 
-    # One-to-many relationship with Match
+    # One-to-many relationship with Partie 
     parties: Mapped[List["Partie"]] = relationship(back_populates="stade")
 
 
