@@ -26,7 +26,6 @@ def generate_parties(db: Session, n):
         if equipe.coupe_du_monde:
             edition = equipe.coupe_du_monde.edition
             equipes_par_edition[edition].append(equipe)
-
     
     for _ in range(n):
         edition = random.choice(list(equipes_par_edition.keys()))
@@ -34,7 +33,6 @@ def generate_parties(db: Session, n):
 
         if len(equipes_edition) < 2:
             continue
-
 
         equipe1, equipe2 = random.sample(equipes_edition, 2)
         stade = random.choice(stades)
@@ -106,6 +104,7 @@ def generate_personnel(db: Session):
             )
             db.add(staff)
     db.commit()
+
 def generate_arbitres(db: Session, n):
     nationalities = ["Français", "Espagnol", "Italien", "Allemand", "Anglais"]
     

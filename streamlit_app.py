@@ -4,6 +4,7 @@ from sqlalchemy import  create_engine, text
 import pandas as pd
 from queries import Query_1, Query_2, Query_3, Query_4
 from dotenv import load_dotenv
+
 load_dotenv()
 
 # CSS

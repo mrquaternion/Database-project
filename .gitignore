@@ -23,6 +23,5 @@ __pycache__/
 # Mot de passe ou config sensible
 config_secrets.py
 
-.env 
 
 
