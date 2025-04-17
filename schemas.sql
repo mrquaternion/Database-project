@@ -1,10 +1,9 @@
 CREATE TABLE coupe_du_monde (
     id_cdm SERIAL PRIMARY KEY,
     annee INTEGER NOT NULL UNIQUE,
-    edition VARCHAR(50) NOT NULL UNIQUE,
     pays_hote VARCHAR(100) NOT NULL,
     nb_equipes INTEGER NOT NULL,
-    vainqueur VARCHAR(100)
+    vainqueur VARCHAR(100) NOT NULL,
     FOREIGN KEY (vainqueur) REFERENCES equipe(nom_pays)        
 );
 
@@ -12,7 +11,7 @@ CREATE TABLE equipe (
     id_equipe SERIAL PRIMARY KEY,
     coupe_id INTEGER NOT NULL,
     nom_pays VARCHAR(100) NOT NULL,
-    nb_joueurs INTEGER,
+    nb_joueurs INTEGER NOT NULL,
     UNIQUE (coupe_id, nom_pays),
     FOREIGN KEY (coupe_id) REFERENCES coupe_du_monde(id_cdm)
 );
@@ -33,8 +32,8 @@ CREATE TABLE partie (
     stade_id INTEGER NOT NULL,
     equipe_dom_id INTEGER NOT NULL,
     equipe_ext_id INTEGER NOT NULL,
-    score_dom INTEGER,
-    score_ext INTEGER,
+    score_dom INTEGER NOT NULL,
+    score_ext INTEGER NOT NULL,
     FOREIGN KEY (coupe_id)      REFERENCES coupe_du_monde(id_cdm),
     FOREIGN KEY (stade_id)      REFERENCES stade(id_stade),
     FOREIGN KEY (equipe_dom_id) REFERENCES equipe(id_equipe),
@@ -49,7 +48,7 @@ CREATE TABLE joueur (
     date_naissance DATE NOT NULL,
     annee_deces INTEGER,
     numero INTEGER NOT NULL,
-    position VARCHAR(50),
+    position VARCHAR(50) NOT NULL,
     cartons_jaunes INTEGER DEFAULT 0,
     cartons_rouges INTEGER DEFAULT 0,
     UNIQUE (equipe_id, numero),
