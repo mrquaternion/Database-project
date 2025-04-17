@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from faker import Faker
 from config import SessionLocal
-from models import Joueur, Personnel, Partie,  Arbitre, ArbitreDans, Stade, Equipe
+from models import Joueur, Personnel, Partie, Arbitre, ArbitreDans, Stade, Equipe, CoupeDuMonde
 from insert_cdm import insert_coupes_du_monde
 from insert_equipes import insert_equipes
 from collections import defaultdict
@@ -9,7 +9,6 @@ import random
 from datetime import date
 
 fake = Faker()
-
 
 def generate_parties(db: Session, n):
     phases = ["Phase de groupes", "Huitièmes de finale", "Quarts de finale", "Demi-finale", "Finale"]
@@ -23,8 +22,8 @@ def generate_parties(db: Session, n):
     equipes_par_edition = defaultdict(list)
 
     for equipe in equipes:
-        if equipe.coupe_du_monde:
-            edition = equipe.coupe_du_monde.edition
+        if equipe.coupe:
+            edition = equipe.coupe.annee
             equipes_par_edition[edition].append(equipe)
     
     for _ in range(n):
@@ -44,18 +43,19 @@ def generate_parties(db: Session, n):
             year_int = 2022
 
         date_partie = fake.date_between_dates(
-            date_start=date(year_int, 6,1),
+            date_start=date(year_int, 6, 1),
             date_end=date(year_int, 7, 31)
         )
 
         partie = Partie(
-            date=date_partie,
+            date_partie=date_partie,
             phase=phase,
-            stade =stade,
-            equipe_receveuse=equipe1,
-            equipe_visiteuse=equipe2,
-            score_receveur=fake.random_int(min=0, max=5),
-            score_visiteuse=fake.random_int(min=0, max=5),
+            stade_id=stade.id_stade,
+            equipe_dom_id=equipe1.id_equipe,
+            equipe_ext_id=equipe2.id_equipe,
+            score_dom=fake.random_int(min=0, max=5),
+            score_ext=fake.random_int(min=0, max=5),
+            coupe_id=equipe1.coupe_id
         )
         db.add(partie)
 
@@ -67,8 +67,9 @@ def generate_stades(db: Session, n=10):
         name = fake.company()
         type_de_stade = fake.random_element(type_de_stades)
         stade = Stade(
-            nom= f"{name} {type_de_stade}",
-            ville=fake.city()
+            nom=f"{name} {type_de_stade}",
+            ville=fake.city(),
+            pays=fake.country()
         )
         db.add(stade)
     db.commit()
@@ -84,9 +85,9 @@ def generate_joueurs(db: Session):
                 date_naissance=fake.date_of_birth(minimum_age=18, maximum_age=40),
                 numero=fake.random_int(min=1, max=99),
                 position=fake.random_element(elements=["Gardien", "Défenseur", "Milieu", "Attaquant"]),
-                carton_jaune=fake.random_int(min=0, max=3),
-                carton_rouge=fake.random_int(min=0, max=1),
-                equipe_id=equipe.id
+                cartons_jaunes=fake.random_int(min=0, max=3),
+                cartons_rouges=fake.random_int(min=0, max=1),
+                equipe_id=equipe.id_equipe
             )
             db.add(joueur)
     db.commit()
@@ -99,8 +100,8 @@ def generate_personnel(db: Session):
                 nom=fake.last_name(),
                 prenom=fake.first_name_male(),
                 date_naissance=fake.date_of_birth(minimum_age=30, maximum_age=65),
-                role=role,
-                equipe_id=equipe.id
+                role_principal=role,
+                equipe_id=equipe.id_equipe
             )
             db.add(staff)
     db.commit()
@@ -132,9 +133,9 @@ def generate_arbitres_dans(db: Session):
         for i, arbitre in enumerate(arbitres_sel):
             role = roles[i % len(roles)]
             arbitre_dans = ArbitreDans(
-                arbitre_id=arbitre.id,
-                partie_id=partie.id,
-                role=role
+                arbitre_id=arbitre.id_arbitre,
+                partie_id=partie.id_partie,
+                role_arbitre=role
             )
             db.add(arbitre_dans)
 

@@ -15,16 +15,17 @@ equipes_par_edition = {
     "2022": ["Argentine", "France", "Croatie", "Maroc", "Angleterre", "Brésil", "Portugal", "Pays-Bas", "Japon", "Sénégal"]
 }
 
-
 def insert_equipes(db):
     db: Session = SessionLocal()
     try:
         for edition, equipes in equipes_par_edition.items():
-            coupe = db.query(CoupeDuMonde).filter(CoupeDuMonde.edition == edition).first()
+            coupe = db.query(CoupeDuMonde).filter(CoupeDuMonde.annee == int(edition)).first()
             if coupe:
                 for nom_pays in equipes:
-                    equipe = Equipe(nom_pays=nom_pays, coupe_du_monde_id=coupe.id)
+                    equipe = Equipe(nom_pays=nom_pays,coupe_id=coupe.id_cdm,nb_joueurs=11)
                     db.add(equipe)
+            else:
+                continue;
         db.commit()
     except Exception as e:
         db.rollback()
