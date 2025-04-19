@@ -7,9 +7,6 @@ env/
 __pycache__/
 *.pyc
 
-# Fichiers liés à l'environnement local
-*.env
-.env
 
 # Fichiers système
 .DS_Store
