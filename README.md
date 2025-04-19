@@ -28,7 +28,7 @@ sudo systemctl enable docker
 Cloner ce dépôt :
 
 ```bash
-git clone <lien_du_repository>
+git clone https://github.com/Yamires/Base_de_Donn-es_IFT2935-.git
 cd coupe_du_monde
 ```
 
