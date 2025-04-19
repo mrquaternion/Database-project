@@ -61,7 +61,7 @@ def generate_parties(db: Session, n):
 
     db.commit()
 
-def generate_stades(db: Session, n=10):
+def generate_stades(db: Session, n):
     type_de_stades = ["Stadium", "Arena", "Park", "Field"]
     for _ in range(n):
         name = fake.company()
@@ -74,11 +74,10 @@ def generate_stades(db: Session, n=10):
         db.add(stade)
     db.commit()
 
-def generate_joueurs(db: Session):
+def generate_joueurs(db: Session, n):
     equipes = db.query(Equipe).all()
     for equipe in equipes:
-        # Generate 11 players for each team
-        for _ in range(11): 
+        for _ in range(n): 
             joueur = Joueur(
                 nom=fake.last_name(),
                 prenom=fake.first_name_male(),
@@ -146,11 +145,12 @@ def main():
 
     insert_coupes_du_monde(db)
     insert_equipes(db)
-
-    generate_stades(db)
-    generate_joueurs(db)
+    # Generate 10 stades
+    generate_stades(db, n=10)
+    # Generate 11 players for each team
+    generate_joueurs(db, n=11)
     generate_personnel(db)
-    generate_parties(db, n=30)
+    generate_parties(db, n=100)
     generate_arbitres(db, n=20)
     generate_arbitres_dans(db)
 

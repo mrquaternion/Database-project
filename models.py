@@ -58,7 +58,7 @@ class Personnel(Base):
     nom: Mapped[str] = mapped_column(String(100), nullable=False)
     prenom: Mapped[str] = mapped_column(String(100), nullable=False)
     date_naissance: Mapped[date] = mapped_column(Date, nullable=False)
-    annee_deces: Mapped[Optional[int]] = mapped_column(nullable=True)
+    annee_deces: Mapped[Optional[date]] = mapped_column(nullable=True)
     role_principal: Mapped[str] = mapped_column(String(50), nullable=False)
 
     equipe: Mapped["Equipe"] = relationship(back_populates="personnels")
