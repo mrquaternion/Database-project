@@ -1,16 +1,17 @@
-
 services:
   db:
     image: postgres:15
     container_name: coupe_du_monde_db
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
-      POSTGRES_DB: ${POSTGRES_DB:-coupe_du_monde_db}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: coupe_du_monde
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+    networks:
+      - coupe_du_monde_network
 
   app:
     build: .
@@ -18,11 +19,17 @@ services:
     depends_on:
       - db
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-coupe_du_monde_db}
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/coupe_du_monde
     ports:
       - "8501:8501"
     volumes:
       - .:/app
+    networks:
+      - coupe_du_monde_network
 
 volumes:
   pgdata:
+
+networks:
+  coupe_du_monde_network:
+    driver: bridge

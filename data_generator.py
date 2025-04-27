@@ -145,9 +145,7 @@ def main():
 
     insert_coupes_du_monde(db)
     insert_equipes(db)
-    # Generate 10 stades
     generate_stades(db, n=10)
-    # Generate 11 players for each team
     generate_joueurs(db, n=11)
     generate_personnel(db)
     generate_parties(db, n=100)
