@@ -45,7 +45,7 @@ Cela :
 3. insère des données fictives
 4. lance l’application Streamlit
 5. Ouvrir l’application dans le navigateur :
-   📍 http://localhost:8501
+    http://localhost:8501
 
 #### Dépannage
 
