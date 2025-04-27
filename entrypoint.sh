@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "⏳ Attente de la base de données..."
+echo "Attente de la base de données..."
 until pg_isready -h db -p 5432 -U yamira; do
   sleep 1
 done
