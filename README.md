@@ -1,42 +1,42 @@
-## 🐳 Pré-requis : Docker et Docker Compose
+##### Outils :
 
-Ce projet est entièrement contené avec Docker. Vous n’avez **rien d’autre à installer** que Docker.
+* Docker et docker
 
-### 🔧 Installer Docker
+#### Langugues et base de données:
 
-#### ▶️ Windows 10/11
+* Python 3.12 avec les bibliothèques (voir requirements.txt):
+  2.1 streamlit
+  2.2 sqlalchemy
+  2.3 psycopg2-binary
+  2.4 pandas
+  2.5 python-dotenv
+  2.6 faker
+* PostgresSQL15
 
-1. Télécharger Docker Desktop :https://www.docker.com/products/docker-desktop/
-2. Suivre les instructions d'installation, puis redémarrer l'ordinateur si nécessaire.
+#### Base de données
 
-#### 🍎 macOS (Intel ou Apple Silicon)
+La base de données PostgresSQL est configurée automatiquement via Docker Compose. Les paramètres par défault sont définis dans le fichier .env
 
-1. Télécharger Docker Desktop pour Mac :https://www.docker.com/products/docker-desktop/
-2. Ouvrir l’image `.dmg` téléchargée, puis glisser Docker dans Applications.
+Lors du démarrage, les scripts suivnats osnt exécutés :
 
-#### 🐧 Linux (Ubuntu / Debian)
+1. create_tables.py : Crée les tables dans la base de données
+2. data_generator.py: Génère des données fictives
 
-```bash
-sudo apt update
-sudo apt install docker.io docker-compose -y
-sudo systemctl start docker
-sudo systemctl enable docker
-```
+#### Utilisateur par défault:
 
-#### 🚀 Lancer le projet
+* Utilisateur: postgres
+* Mot de passe: postgres
+* Base de données: coupe_du_monde
+* Hote: localhost
+* Port: 5432
 
-Cloner ce dépôt :
+#### Instructions d'exécution
 
-```bash
-git clone https://github.com/Yamires/Base_de_Donn-es_IFT2935-.git
-cd coupe_du_monde
-```
+1. Pour lancer l'application, lancer docker et exécuter la commande suivante dans le répertoire coupe_du_monde:
 
-Lancer l'application :
-
-````bash
-docker-compose up --build
-````
+   ```
+   docker-compose up --build 
+   ```
 
 Cela :
 
@@ -47,35 +47,22 @@ Cela :
 5. Ouvrir l’application dans le navigateur :
    📍 http://localhost:8501
 
+#### Dépannage
 
-#### 🌐 Ouvrir automatiquement le navigateur (facultatif)
+#### Vérifier si Docker fonctionne :
 
-💻 macOS :
-````
-open http://localhost:8501
-````
-🐧 Linux :
-````
-xdg-open http://localhost:8501
-````
-🪟 Windows (PowerShell) :
-````
-start http://localhost:8501
-````
-
-#### 🧪 Dépannage
-
-#### 🔍 Vérifier si Docker fonctionne :
 ````
 docker --version
 docker-compose --version
 ````
-#### 🐘 Erreur : base de données inaccessible ?
+
+#### Erreur : base de données inaccessible ?
+
 Attendez quelques secondes : le conteneur attend automatiquement que PostgreSQL soit prêt avant de démarrer.
 
-#### ❌ Si un conteneur est figé :
+#### Si un conteneur est figé :
+
 ````
-docker-compose down
+docker-compose down -v 
 docker-compose up --build
 ````
-
