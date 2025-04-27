@@ -1,6 +1,6 @@
 ##### Outils :
 
-* Docker et docker
+* Docker 
 
 #### Langugues et base de données:
 
