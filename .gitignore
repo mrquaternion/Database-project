@@ -11,9 +11,6 @@ __pycache__/
 # Fichiers système
 .DS_Store
 
-# Jupyter notebook checkpoints (si tu en as)
-.ipynb_checkpoints/
-
 # Streamlit cache
 .streamlit/
 
